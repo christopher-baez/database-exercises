@@ -19,5 +19,7 @@ WHERE name = "Nevermind"; -- Grunge, Alternative rock
 SELECT * FROM albums
 WHERE release_date BETWEEN 1990 AND 1999;
 -- Which albums had less than 20 million certified sales? Rename this column as low_selling_albums
-SELECT * FROM albums
+SELECT 
+	name as low_selling_albums
+FROM albums
 WHERE sales < 20.0;
