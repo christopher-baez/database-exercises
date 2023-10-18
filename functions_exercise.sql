@@ -10,12 +10,12 @@ select distinct
 	upper(concat(first_name,' ',last_name)) as full_name
 from employees
 where last_name like "e%e";
-
+use employees;
 -- Use a function to determine how many results were returned from your previous query.
 select distinct 
 	count(upper(concat(first_name,' ',last_name))) as full_name
 from employees
-where last_name like "e%e";
+where last_name like "e%e";-- 899
 
 -- Find all employees hired in the 90s and born on Christmas. 
 -- Use datediff() function to find how many days they have been working at 
