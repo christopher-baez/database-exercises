@@ -27,15 +27,20 @@ where first_name  = (select distinct first_name
 		where first_name = 'Aamod'
 			) and to_date > now();
 
--- How many people in the employees table are no longer working for the company? Give the answer in a comment in your code.
-select *
+-- How many people in the employees table are no longer working for the company? 
+-- Give the answer in a comment in your code.
+select emp_no
 from dept_emp
-where to_date < now();
+where to_date > now();
 
-select count(*)
-from (select *
-from dept_emp
-where to_date < now()) AS A;
+select count(*) as cnt 
+from employees
+where emp_no not in
+	(
+	select emp_no
+	from dept_emp
+	where to_date > now()
+    ); -- 59900
 
 -- Find all the current department managers that are female. List their names in a comment in your code.
 select *
@@ -48,7 +53,7 @@ join employees as e
 	using(emp_no)
 where dm.emp_no in (select emp_no
 from employees
-where gender like "f");
+where gender like "f") and to_date > now();
 
 -- Find all the employees who currently have a higher salary than the companie's overall, historical average salary.
 select avg(salary) 
@@ -65,6 +70,18 @@ where salary > (select avg(salary)
         ) and s.to_date > now()
         ;
 
+select count(*)
+from (
+	select concat(first_name, ' ', last_name) as 'Employee', salary,
+		(select avg(salary) 
+		from salaries) as 'AVG historical salary'
+from employees as e
+join salaries as s
+	using(emp_no)
+where salary > (select avg(salary) 
+		from salaries
+        ) and s.to_date > now()
+        ) as table_count;
 -- How many current salaries are within 1 standard deviation of the current highest salary? 
 -- (Hint: you can use a built-in function to calculate the standard deviation.) What percentage of all salaries is this?
 select max(salary)
